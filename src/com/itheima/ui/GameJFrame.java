@@ -6,6 +6,17 @@ public class GameJFrame extends JFrame {
     // JFrame : 界面、窗体
     // GameJFrame : 游戏的主界面，以后跟游戏相关的逻辑都写在这个类中
     public GameJFrame(){
+        // 初始化界面
+        initJFrame();
+
+        // 初始化菜单
+        initJMenuBar();
+
+        // 让界面显示出来,建议写在最后
+        this.setVisible(true);
+    }
+
+    private void initJFrame(){
         // 设置界面的宽、高
         this.setSize(603, 680);
         // 设置界面的标题
@@ -16,8 +27,9 @@ public class GameJFrame extends JFrame {
         this.setLocationRelativeTo(null);
         // 设置关闭模式
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
 
-        // 初始化菜单
+    private void initJMenuBar(){
         // 创建整个的菜单对象
         JMenuBar jMenuBar = new JMenuBar();
 
@@ -46,13 +58,8 @@ public class GameJFrame extends JFrame {
         // 给整个界面设置菜单
         this.setJMenuBar(jMenuBar);
 
-        // 让界面显示出来
-        this.setVisible(true);
-
 
     }
-
-
 
 
 }
