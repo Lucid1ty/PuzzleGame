@@ -3,7 +3,7 @@ out/
 .idea
 !**/src/main/**/out/
 !**/src/test/**/out/
-/.iml
+PuzzleGame.iml
 .xml
 
 ### Eclipse ###
