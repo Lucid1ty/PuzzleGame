@@ -12,9 +12,36 @@ public class GameJFrame extends JFrame {
         // 初始化菜单
         initJMenuBar();
 
+        // 初始化图片
+        initImage();
+
         // 让界面显示出来,建议写在最后
         this.setVisible(true);
     }
+
+    /**
+     * 初始化图片
+     */
+    private void initImage() {
+        int number = 1;
+        // 利用循环加载所有图片
+        // 外循环：把内循环重复执行了4次
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                // 内循环：表示在一行中添加4张图片
+                // 创建一个JLabel对象(管理容器)
+                JLabel jLabel = new JLabel(new ImageIcon("C:\\Project\\PuzzleGame\\image\\animal\\animal3\\" + number +".jpg"));
+                // 指定图片位置
+                jLabel.setBounds(105 * j, 105 * i, 105, 105);
+                // 把管理容器添加到界面中
+                this.getContentPane().add(jLabel);
+                // 添加一个图片后，number自增，这样下一次循环就加载下一张图片
+                number++;
+
+            }
+        }
+    }
+
 
     private void initJFrame(){
         // 设置界面的宽、高
@@ -27,6 +54,8 @@ public class GameJFrame extends JFrame {
         this.setLocationRelativeTo(null);
         // 设置关闭模式
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // 取消默认的居中放置，只有取消了才会按照XY轴的形式添加组件
+        this.setLayout(null);
     }
 
     private void initJMenuBar(){
