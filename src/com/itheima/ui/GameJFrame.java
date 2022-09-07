@@ -1,8 +1,15 @@
 package com.itheima.ui;
 
 import javax.swing.*;
+import java.util.Random;
+
 
 public class GameJFrame extends JFrame {
+    // 创建一个二位数组
+    // 目的：用于管理数据
+    // 加载图片的时候，会根据二维数组中的数据进行加载
+    int[][] data = new int[4][4];
+
     // JFrame : 界面、窗体
     // GameJFrame : 游戏的主界面，以后跟游戏相关的逻辑都写在这个类中
     public GameJFrame(){
@@ -12,7 +19,10 @@ public class GameJFrame extends JFrame {
         // 初始化菜单
         initJMenuBar();
 
-        // 初始化图片
+        // 初始化数据(打乱)
+        initData();
+
+        // 初始化图片(根据打乱的结果加载图片)
         initImage();
 
         // 让界面显示出来,建议写在最后
@@ -20,24 +30,50 @@ public class GameJFrame extends JFrame {
     }
 
     /**
+     * 初始化数据(打乱)
+     */
+    private void initData() {
+        // 1.定义一个一维数组
+        int[] tempArr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+
+        // 2.打乱数组中的数据的顺序
+        // 遍历数组，得到每一个元素，拿着每一个元素跟随机索引上的数据交换
+        Random r = new Random();
+        for (int i = 0; i < tempArr.length; i++) {
+            // 获取随机索引
+            int index = r.nextInt(tempArr.length);
+            // 拿着遍历到的每一个数据，跟随机索引上的数据进行交换
+            int temp = tempArr[i];
+            tempArr[i] = tempArr[index];
+            tempArr[index] = temp;
+        }
+        // 给二位数组添加数据
+        // 解法一
+        // 遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组中
+        for (int i = 0; i < tempArr.length; i++) {
+            // 取余(取模)操作时，被除数小于除数时，运算结果等于被除数
+            data[i /4][i % 4] = tempArr[i];
+        }
+    }
+
+    /**
      * 初始化图片
+     * 添加图片的时候，就需要按照二维数组中管理的数据添加图片
      */
     private void initImage() {
-        int number = 1;
         // 利用循环加载所有图片
         // 外循环：把内循环重复执行了4次
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
+                // 获取当前要加载图片的序号
+                int num = data[i][j];
                 // 内循环：表示在一行中添加4张图片
                 // 创建一个JLabel对象(管理容器)
-                JLabel jLabel = new JLabel(new ImageIcon("C:\\Project\\PuzzleGame\\image\\animal\\animal3\\" + number +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon("C:\\Project\\PuzzleGame\\image\\animal\\animal3\\" + num +".jpg"));
                 // 指定图片位置
                 jLabel.setBounds(105 * j, 105 * i, 105, 105);
                 // 把管理容器添加到界面中
                 this.getContentPane().add(jLabel);
-                // 添加一个图片后，number自增，这样下一次循环就加载下一张图片
-                number++;
-
             }
         }
     }
@@ -86,9 +122,5 @@ public class GameJFrame extends JFrame {
 
         // 给整个界面设置菜单
         this.setJMenuBar(jMenuBar);
-
-
     }
-
-
 }
