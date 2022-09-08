@@ -2,14 +2,20 @@ package com.itheima.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
 
-public class GameJFrame extends JFrame {
+public class GameJFrame extends JFrame implements KeyListener {
     // 创建一个二位数组
     // 目的：用于管理数据
     // 加载图片的时候，会根据二维数组中的数据进行加载
     int[][] data = new int[4][4];
+
+    // 记录空白方块在二维数组中的位置
+    int x = 0;
+    int y = 0;
 
     // JFrame : 界面、窗体
     // GameJFrame : 游戏的主界面，以后跟游戏相关的逻辑都写在这个类中
@@ -29,6 +35,7 @@ public class GameJFrame extends JFrame {
         // 让界面显示出来,建议写在最后
         this.setVisible(true);
     }
+
 
     /**
      * 初始化数据(打乱)
@@ -52,8 +59,14 @@ public class GameJFrame extends JFrame {
         // 解法一
         // 遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组中
         for (int i = 0; i < tempArr.length; i++) {
-            // 取余(取模)操作时，被除数小于除数时，运算结果等于被除数
-            data[i /4][i % 4] = tempArr[i];
+            // 判断是否为0
+            if (tempArr[i] == 0){
+                x = i / 4;
+                y = i % 4;
+            }else {
+                // 取余(取模)操作时，被除数小于除数时，运算结果等于被除数
+                data[i /4][i % 4] = tempArr[i];
+            }
         }
     }
 
@@ -62,6 +75,8 @@ public class GameJFrame extends JFrame {
      * 添加图片的时候，就需要按照二维数组中管理的数据添加图片
      */
     private void initImage() {
+        // 清空已经出现的所有图片
+        this.getContentPane().removeAll();
         // 细节：先加载的图片在上方，后加载的图片在下方
 
         // 利用循环加载所有图片
@@ -90,6 +105,8 @@ public class GameJFrame extends JFrame {
         // 把背景图片添加到界面当中
         this.getContentPane().add(background);
 
+        // 刷新一下界面
+        this.getContentPane().repaint();
     }
 
 
@@ -106,6 +123,8 @@ public class GameJFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         // 取消默认的居中放置，只有取消了才会按照XY轴的形式添加组件
         this.setLayout(null);
+        // 给整个界面添加键盘监听事件
+        this.addKeyListener(this);
     }
 
     private void initJMenuBar(){
@@ -136,5 +155,62 @@ public class GameJFrame extends JFrame {
 
         // 给整个界面设置菜单
         this.setJMenuBar(jMenuBar);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // 对上、下、左、右进行判断
+        // 左：37 上：38 右：39 下：40
+        int code = e.getKeyCode();
+        if (code == 37){
+            System.out.println("向左移动");
+            // 表示空白方块已经到最左边了，无法再向左移动
+            if (y == 0) {
+                return;
+            }
+            // 把白色方块向左移动
+            data[x][y] = data[x][y - 1];
+            data[x][y - 1] = 0;
+            y--;
+            // 按照移动后的样子绘制新图片
+            initImage();
+        } else if (code == 38) {
+            System.out.println("向上移动");
+            if (x == 0) {
+                return;
+            }
+            data[x][y] = data[x - 1][y];
+            data[x - 1][y] = 0;
+            x--;
+            initImage();
+        } else if (code == 39) {
+            System.out.println("向右移动");
+            if (y == 3) {
+                return;
+            }
+            data[x][y] = data[x][y + 1];
+            data[x][y + 1] = 0;
+            y++;
+            initImage();
+        } else if (code == 40) {
+            System.out.println("向下移动");
+            if (x == 3) {
+                return;
+            }
+            data[x][y] = data[x + 1][y];
+            data[x + 1][y] = 0;
+            x++;
+            initImage();
+        }
     }
 }
