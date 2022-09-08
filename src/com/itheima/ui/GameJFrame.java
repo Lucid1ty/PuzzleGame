@@ -1,6 +1,7 @@
 package com.itheima.ui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.util.Random;
 
 
@@ -61,6 +62,8 @@ public class GameJFrame extends JFrame {
      * 添加图片的时候，就需要按照二维数组中管理的数据添加图片
      */
     private void initImage() {
+        // 细节：先加载的图片在上方，后加载的图片在下方
+
         // 利用循环加载所有图片
         // 外循环：把内循环重复执行了4次
         for (int i = 0; i < 4; i++) {
@@ -69,13 +72,24 @@ public class GameJFrame extends JFrame {
                 int num = data[i][j];
                 // 内循环：表示在一行中添加4张图片
                 // 创建一个JLabel对象(管理容器)
-                JLabel jLabel = new JLabel(new ImageIcon("C:\\Project\\PuzzleGame\\image\\animal\\animal3\\" + num +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon(".\\image\\animal\\animal3\\" + num +".jpg"));
                 // 指定图片位置
-                jLabel.setBounds(105 * j, 105 * i, 105, 105);
+                jLabel.setBounds(105 * j + 83, 105 * i + 134, 105, 105);
+                // 给图片添加边框
+                // 0:表示让图片凸起来，常量形式：BevelBorder.RAISED
+                // 1:表示让图片凹下去，常量形式：BevelBorder.LOWERED
+                jLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
                 // 把管理容器添加到界面中
                 this.getContentPane().add(jLabel);
             }
         }
+
+        // 添加背景图片
+        JLabel background = new JLabel(new ImageIcon(".\\image\\background.png"));
+        background.setBounds(40, 40, 508, 560);
+        // 把背景图片添加到界面当中
+        this.getContentPane().add(background);
+
     }
 
 
