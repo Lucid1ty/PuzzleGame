@@ -87,10 +87,9 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             if (tempArr[i] == 0){
                 x = i / 4;
                 y = i % 4;
-            }else {
-                // 取余(取模)操作时，被除数小于除数时，运算结果等于被除数
-                data[i /4][i % 4] = tempArr[i];
             }
+            // 取余(取模)操作时，被除数小于除数时，运算结果等于被除数
+            data[i /4][i % 4] = tempArr[i];
         }
     }
 
@@ -321,12 +320,42 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         // 判断
         if (obj == replayItem){
             System.out.println("重新游戏");
+            // 计步器清零
+            step = 0;
+            // 再次打乱二维数组中的数据
+            initData();
+            // 重新加载图片
+            initImage();
         } else if (obj == reLoginItem) {
             System.out.println("重新登录");
+            // 关闭当前界面
+            this.setVisible(false);
+            // 打开登录界面
+            new LoginJFrame();
         }else if (obj == closeItem) {
             System.out.println("关闭游戏");
+            // 直接关闭虚拟机即可
+            System.exit(0);
         }else if (obj == accountItem) {
             System.out.println("公众号");
+            // 创建一个弹窗对象
+            JDialog jDialog = new JDialog();
+            // 创建一个管理图片的容器对象JLabel
+            JLabel jLabel = new JLabel(new ImageIcon("image\\about.png"));
+            // 设置jLabel的位置和宽、高
+            jLabel.setBounds(0, 0, 258, 258);
+            // 把图片添加到弹框当中
+            jDialog.getContentPane().add(jLabel);
+            // 设置弹框(jDialog)的大小
+            jDialog.setSize(344, 344);
+            // 置顶
+            jDialog.setAlwaysOnTop(true);
+            // 居中
+            jDialog.setLocationRelativeTo(null);
+            // 弹框不关闭则无法操作下面的界面
+            jDialog.setModal(true);
+            // 可见
+            jDialog.setVisible(true);
         }
     }
 }
