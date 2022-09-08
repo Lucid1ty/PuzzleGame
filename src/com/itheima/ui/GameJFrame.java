@@ -29,6 +29,9 @@ public class GameJFrame extends JFrame implements KeyListener {
             {13, 14, 15, 0},
     };
 
+    // 定义变量用来统计步数
+    int step = 0;
+
 
     // JFrame : 界面、窗体
     // GameJFrame : 游戏的主界面，以后跟游戏相关的逻辑都写在这个类中
@@ -97,6 +100,11 @@ public class GameJFrame extends JFrame implements KeyListener {
             winJLabel.setBounds(203, 283, 197, 73);
             this.getContentPane().add(winJLabel);
         }
+
+        // 显示统计步数
+        JLabel stepCount = new JLabel("步数" + step);
+        stepCount.setBounds(50,30,100,20);
+        this.getContentPane().add(stepCount);
 
 
         // 细节：先加载的图片在上方，后加载的图片在下方
@@ -225,6 +233,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y] = data[x][y - 1];
             data[x][y - 1] = 0;
             y--;
+            // 每移动一次，计数器就自增一次
+            step++;
             // 按照移动后的样子绘制新图片
             initImage();
         } else if (code == 38) {
@@ -235,6 +245,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y] = data[x - 1][y];
             data[x - 1][y] = 0;
             x--;
+            // 每移动一次，计数器就自增一次
+            step++;
             initImage();
         } else if (code == 39) {
             System.out.println("向右移动");
@@ -244,6 +256,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y] = data[x][y + 1];
             data[x][y + 1] = 0;
             y++;
+            // 每移动一次，计数器就自增一次
+            step++;
             initImage();
         } else if (code == 40) {
             System.out.println("向下移动");
@@ -253,6 +267,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y] = data[x + 1][y];
             data[x + 1][y] = 0;
             x++;
+            // 每移动一次，计数器就自增一次
+            step++;
             initImage();
         } else if (code == 65) {
             // 松开A键以后重新加载图片
