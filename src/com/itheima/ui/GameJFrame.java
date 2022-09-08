@@ -2,6 +2,7 @@ package com.itheima.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -16,6 +17,18 @@ public class GameJFrame extends JFrame implements KeyListener {
     // 记录空白方块在二维数组中的位置
     int x = 0;
     int y = 0;
+
+    // 定义一个变量，记录当前展示图片的路径
+    String path = "image\\girl\\girl1\\";
+
+    // 定义一个二维数字，储存正确的数据
+    int[][] win = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12},
+            {13, 14, 15, 0},
+    };
+
 
     // JFrame : 界面、窗体
     // GameJFrame : 游戏的主界面，以后跟游戏相关的逻辑都写在这个类中
@@ -77,8 +90,16 @@ public class GameJFrame extends JFrame implements KeyListener {
     private void initImage() {
         // 清空已经出现的所有图片
         this.getContentPane().removeAll();
-        // 细节：先加载的图片在上方，后加载的图片在下方
 
+        if (victory()){
+            // 返回胜利的图标
+            JLabel winJLabel = new JLabel(new ImageIcon("C:\\Project\\PuzzleGame\\image\\win.png"));
+            winJLabel.setBounds(203, 283, 197, 73);
+            this.getContentPane().add(winJLabel);
+        }
+
+
+        // 细节：先加载的图片在上方，后加载的图片在下方
         // 利用循环加载所有图片
         // 外循环：把内循环重复执行了4次
         for (int i = 0; i < 4; i++) {
@@ -87,7 +108,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 int num = data[i][j];
                 // 内循环：表示在一行中添加4张图片
                 // 创建一个JLabel对象(管理容器)
-                JLabel jLabel = new JLabel(new ImageIcon(".\\image\\animal\\animal3\\" + num +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon(path + num +".jpg"));
                 // 指定图片位置
                 jLabel.setBounds(105 * j + 83, 105 * i + 134, 105, 105);
                 // 给图片添加边框
@@ -100,7 +121,7 @@ public class GameJFrame extends JFrame implements KeyListener {
         }
 
         // 添加背景图片
-        JLabel background = new JLabel(new ImageIcon(".\\image\\background.png"));
+        JLabel background = new JLabel(new ImageIcon("image\\background.png"));
         background.setBounds(40, 40, 508, 560);
         // 把背景图片添加到界面当中
         this.getContentPane().add(background);
@@ -162,13 +183,35 @@ public class GameJFrame extends JFrame implements KeyListener {
 
     }
 
+    // 按下不松手时会调用这个方法
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int code = e.getKeyCode();
+        // 当按下A时
+        if (code == 65) {
+            // 把界面中的所有图片全部删除
+            this.getContentPane().removeAll();
+            // 加载第一张完整的图片
+            JLabel all = new JLabel(new ImageIcon(path + "all.jpg"));
+            all.setBounds(83, 134, 420, 420);
+            this.getContentPane().add(all);
+            // 加载背景图片
+            JLabel background = new JLabel(new ImageIcon("image\\background.png"));
+            background.setBounds(40, 40, 508, 560);
+            // 把背景图片添加到界面当中
+            this.getContentPane().add(background);
+            // 刷新一下界面
+            this.getContentPane().repaint();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        // 判断游戏是否胜利，如果胜利，此方法需要直接结束，不能再执行下面的移动代码了
+        if (victory()) {
+            // 结束方法
+            return;
+        }
         // 对上、下、左、右进行判断
         // 左：37 上：38 右：39 下：40
         int code = e.getKeyCode();
@@ -211,6 +254,39 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x + 1][y] = 0;
             x++;
             initImage();
+        } else if (code == 65) {
+            // 松开A键以后重新加载图片
+            System.out.println("查看原图");
+            initImage();
+        } else if (code == 87) {
+            // 按下W直接通关
+            System.out.println("一键通关！");
+            data = new int[][]{
+                    {1, 2, 3, 4},
+                    {5, 6, 7, 8},
+                    {9, 10, 11, 12},
+                    {13, 14, 15, 0}
+            };
+            initImage();
         }
+
     }
+
+
+    /**
+     * 判断data数组中的数据是否跟win数组相同
+     * @return true：data数组中的数据与win数组完全相同
+     */
+    public boolean victory(){
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data.length; j++) {
+                if (data[i][j] != win[i][j]){
+                    // 只要有一个不一样就返回false
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
