@@ -2,7 +2,6 @@ package com.itheima.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,6 +10,7 @@ import java.util.Random;
 
 
 public class GameJFrame extends JFrame implements KeyListener, ActionListener{
+    Random r = new Random();
     // 创建一个二位数组
     // 目的：用于管理数据
     // 加载图片的时候，会根据二维数组中的数据进行加载
@@ -34,11 +34,13 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
     // 定义变量用来统计步数
     int step = 0;
 
-    // 创建选项下面的条目对象
+    //3.创建JMenuItem的对象
+    JMenuItem girl = new JMenuItem("美女");
+    JMenuItem animal = new JMenuItem("动物");
+    JMenuItem sport = new JMenuItem("运动");
     JMenuItem replayItem = new JMenuItem("重新游戏");
     JMenuItem reLoginItem = new JMenuItem("重新登录");
     JMenuItem closeItem = new JMenuItem("关闭游戏");
-
     JMenuItem accountItem = new JMenuItem("公众号");
 
     // JFrame : 界面、窗体
@@ -70,7 +72,6 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
 
         // 2.打乱数组中的数据的顺序
         // 遍历数组，得到每一个元素，拿着每一个元素跟随机索引上的数据交换
-        Random r = new Random();
         for (int i = 0; i < tempArr.length; i++) {
             // 获取随机索引
             int index = r.nextInt(tempArr.length);
@@ -170,21 +171,31 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         // 创建菜单上面的两个选项的对象(功能、关于我们)
         JMenu functionJMenu = new JMenu("功能");
         JMenu aboutJMenu = new JMenu("关于我们");
+        JMenu changeImage = new JMenu("更换图片");
 
-
+        // 把美女，动物，运动添加到更换图片当中
+        changeImage.add(girl);
+        changeImage.add(animal);
+        changeImage.add(sport);
 
         // 将每一个选项下面的条目添加到选项中
+        functionJMenu.add(changeImage);
         functionJMenu.add(replayItem);
         functionJMenu.add(reLoginItem);
         functionJMenu.add(closeItem);
-
+        // 公众号
         aboutJMenu.add(accountItem);
+
 
         // 给条目绑定事件
         replayItem.addActionListener(this);
         reLoginItem.addActionListener(this);
         closeItem.addActionListener(this);
         accountItem.addActionListener(this);
+        girl.addActionListener(this);
+        animal.addActionListener(this);
+        sport.addActionListener(this);
+
 
         // 将菜单里面的两个选项添加到菜单当中
         jMenuBar.add(functionJMenu);
@@ -356,6 +367,35 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             jDialog.setModal(true);
             // 可见
             jDialog.setVisible(true);
+        } else if (obj == girl) {
+            System.out.println("更换图片为美女");
+            // 13张图片：girl1 到 girl13
+            // 获取随机数 1- 13
+            int randomNumber = r.nextInt(13) + 1;
+            // 更改目录：
+            path = "image\\girl\\girl" + randomNumber + "\\";
+            // 要先打乱
+            initData();
+            // 再加载图片
+            initImage();
+        } else if (obj == animal) {
+            System.out.println("更换图片为动物");
+            int randomNumber = r.nextInt(8) + 1;
+            // 更改目录：
+            path = "image\\animal\\animal" + randomNumber + "\\";
+            // 要先打乱
+            initData();
+            // 再加载图片
+            initImage();
+        }else if (obj == sport) {
+            System.out.println("更换图片为运动");
+            int randomNumber = r.nextInt(10) + 1;
+            // 更改目录：
+            path = "image\\sport\\sport" + randomNumber + "\\";
+            // 要先打乱
+            initData();
+            // 再加载图片
+            initImage();
         }
     }
 }

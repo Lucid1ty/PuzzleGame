@@ -8,7 +8,7 @@ public class RegisterJFrame extends JFrame {
         // 设置宽、高
         this.setSize(488, 500);
         // 设置界面的标题
-        this.setTitle("注册");
+        this.setTitle("拼图游戏 注册");
         // 设置界面置顶
         this.setAlwaysOnTop(true);
         // 设置界面居中
@@ -17,5 +17,7 @@ public class RegisterJFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         // 设置可见性
         this.setVisible(true);
+
+        getContentPane();
     }
 }
