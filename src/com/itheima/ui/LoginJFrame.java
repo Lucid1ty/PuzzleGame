@@ -5,18 +5,10 @@ import com.itheima.util.CodeUtil;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 
 public class LoginJFrame extends JFrame implements ActionListener {
     // LoginJFrame : 登录界面，跟登录相关的逻辑都写在这个类中
-
-    // 创建一个集合存储正确的用户名和密码
-    static ArrayList<User> list = new ArrayList<>();
-    static {
-        list.add(new User("zhangsan","123"));
-        list.add(new User("lisi","1234"));
-    }
     // 添加登录按钮
     JButton login = new JButton();
     // 添加注册按钮
@@ -31,9 +23,6 @@ public class LoginJFrame extends JFrame implements ActionListener {
     String codeStr =  CodeUtil.getCode();
 
 
-
-
-
     public LoginJFrame(){
         //初始化界面
         initJFrame();
@@ -42,6 +31,7 @@ public class LoginJFrame extends JFrame implements ActionListener {
         // 设置可见性
         this.setVisible(true);
     }
+
 
     private void initView() {
         //1. 添加用户名文字
@@ -71,7 +61,6 @@ public class LoginJFrame extends JFrame implements ActionListener {
         // 验证码的输入框(在上面new了)
         code.setBounds(195, 256, 100, 30);
         this.getContentPane().add(code);
-
         JLabel rightCode = new JLabel();
         //设置内容
         rightCode.setText(codeStr);
@@ -93,7 +82,7 @@ public class LoginJFrame extends JFrame implements ActionListener {
         login.addActionListener(this);
 
 
-        //6.添加注册按钮(已经在最上面new了)
+        // 添加注册按钮(已经在最上面new了)
         register.setBounds(256, 310, 128, 47);
         register.setIcon(new ImageIcon("image\\login\\注册按钮.png"));
         //去除按钮的默认边框
@@ -120,6 +109,7 @@ public class LoginJFrame extends JFrame implements ActionListener {
         this.setLayout(null);//取消内部默认布局
     }
 
+
     public void showJDialog(String content) {
         //创建一个弹框对象
         JDialog jDialog = new JDialog();
@@ -144,23 +134,47 @@ public class LoginJFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // 获取当前被点击的条目对象
         Object obj = e.getSource();
-
+        // 登录逻辑
         if (obj == login){
-            System.out.println("登录！");
-            // 判断账号和密码是否正确
-            // 打印用户输入的用户名
-            if (username.getText().equals("zhangsan") && password.getText().equals("123") && code.getText().equals(codeStr)){
-                System.out.println("登录成功！");
-                // 隐藏当前的登录窗口
-                this.setVisible(false);
-                // 加载游戏窗口
-                new GameJFrame();
-            } else {
-                System.out.println("用户名或者密码或验证码错误！");
-                showJDialog("用户名或者密码或验证码错误！");
+            System.out.println("登录按钮被点击了！");
+            if (username.getText() == null){
+                System.out.println("用户名为空！");
+                showJDialog("用户名不能为空！");
+            } else if (password.getText() == null) {
+                System.out.println("密码不能为空！");
+                showJDialog("密码不能为空！");
+            } else if (code.getText() == null) {
+                System.out.println("验证码不能为空！");
+                showJDialog("验证码不能为空！");
             }
-        } else if (obj == register) {
-            System.out.println("注册！");
+            // 检查验证码
+            if (!code.getText().equals(codeStr)){
+                // 验证码输入错误
+                System.out.println("您输入的验证码有误！");
+                showJDialog("您输入的验证码有误!");
+            } else {
+                // 遍历用户信息列表(ArrayList User)
+                for (User user : RegisterJFrame.users) {
+                    // 检查用户名和密码！
+                    if (user.getUserName().equals(username.getText()) && user.getPassWord().equals(password.getText())) {
+                        System.out.println("登录成功！");
+                        // 隐藏当前的登录窗口
+                        this.setVisible(false);
+                        // 加载游戏窗口
+                        new GameJFrame();
+                        // 退出当前循环
+                        return;
+                    }
+                }
+                // 如果走到这里，说明用户名或者密码不对，或者没有该用户信息
+                System.out.println("用户名或密码错误，或者没有该账户信息！");
+                showJDialog("用户名或密码错误，或者没有该账户信息!");
+            }
+        }else if (obj == register) {
+            System.out.println("注册按钮被点击了！");
+            // 隐藏当前登录窗口
+            this.setVisible(false);
+            // 创建注册界面
             new RegisterJFrame();
         }
     }

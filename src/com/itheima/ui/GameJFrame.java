@@ -33,8 +33,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
 
     // 定义变量用来统计步数
     int step = 0;
-
-    //3.创建JMenuItem的对象
+    // 创建JMenuItem的对象
     JMenuItem girl = new JMenuItem("美女");
     JMenuItem animal = new JMenuItem("动物");
     JMenuItem sport = new JMenuItem("运动");
@@ -48,16 +47,12 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
     public GameJFrame(){
         // 初始化界面
         initJFrame();
-
         // 初始化菜单
         initJMenuBar();
-
         // 初始化数据(打乱)
         initData();
-
         // 初始化图片(根据打乱的结果加载图片)
         initImage();
-
         // 让界面显示出来,建议写在最后
         this.setVisible(true);
     }
@@ -67,10 +62,10 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
      * 初始化数据(打乱)
      */
     private void initData() {
-        // 1.定义一个一维数组
+        // 定义一个一维数组
         int[] tempArr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-        // 2.打乱数组中的数据的顺序
+        // 打乱数组中的数据的顺序
         // 遍历数组，得到每一个元素，拿着每一个元素跟随机索引上的数据交换
         for (int i = 0; i < tempArr.length; i++) {
             // 获取随机索引
@@ -93,6 +88,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             data[i /4][i % 4] = tempArr[i];
         }
     }
+
 
     /**
      * 初始化图片
@@ -141,7 +137,6 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         background.setBounds(40, 40, 508, 560);
         // 把背景图片添加到界面当中
         this.getContentPane().add(background);
-
         // 刷新一下界面
         this.getContentPane().repaint();
     }
@@ -186,7 +181,6 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         // 公众号
         aboutJMenu.add(accountItem);
 
-
         // 给条目绑定事件
         replayItem.addActionListener(this);
         reLoginItem.addActionListener(this);
@@ -196,7 +190,6 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         animal.addActionListener(this);
         sport.addActionListener(this);
 
-
         // 将菜单里面的两个选项添加到菜单当中
         jMenuBar.add(functionJMenu);
         jMenuBar.add(aboutJMenu);
@@ -205,10 +198,12 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         this.setJMenuBar(jMenuBar);
     }
 
+
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
+
 
     // 按下不松手时会调用这个方法
     @Override
@@ -231,6 +226,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             this.getContentPane().repaint();
         }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -304,7 +300,6 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             };
             initImage();
         }
-
     }
 
 
@@ -323,6 +318,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         }
         return true;
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -365,14 +361,14 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
             jDialog.setLocationRelativeTo(null);
             // 弹框不关闭则无法操作下面的界面
             jDialog.setModal(true);
-            // 可见
+            // 可见性
             jDialog.setVisible(true);
         } else if (obj == girl) {
             System.out.println("更换图片为美女");
             // 13张图片：girl1 到 girl13
             // 获取随机数 1- 13
             int randomNumber = r.nextInt(13) + 1;
-            // 更改目录：
+            // 更改目录
             path = "image\\girl\\girl" + randomNumber + "\\";
             // 要先打乱
             initData();
@@ -381,7 +377,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         } else if (obj == animal) {
             System.out.println("更换图片为动物");
             int randomNumber = r.nextInt(8) + 1;
-            // 更改目录：
+            // 更改目录
             path = "image\\animal\\animal" + randomNumber + "\\";
             // 要先打乱
             initData();
@@ -390,7 +386,7 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener{
         }else if (obj == sport) {
             System.out.println("更换图片为运动");
             int randomNumber = r.nextInt(10) + 1;
-            // 更改目录：
+            // 更改目录
             path = "image\\sport\\sport" + randomNumber + "\\";
             // 要先打乱
             initData();
