@@ -11,9 +11,9 @@ public class RegisterJFrame extends JFrame implements ActionListener {
 
     // 静态成员变量，用于给其他类调用(如：LoginJFrame)
     static ArrayList<User> users = new ArrayList<>();
-    // 静态代码块，new RegisterJFrame 的时候最先执行
+    // 静态代码块，new RegisterJFrame() 的时候最先执行
     static {
-        users.add(new User("zhangsan", "123"));
+        users.add(new User("root", "root"));
     }
     // 用户名输入框
     JTextField username = new JTextField();
