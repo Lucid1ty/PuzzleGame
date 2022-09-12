@@ -40,8 +40,7 @@ public class CodeUtil {
         chars[4] = chars[index];
         chars[index] = temp;
         //10.把字符数组再变回字符串
-        String code = new String(chars);
         //System.out.println(code);
-        return code;
+        return new String(chars);
     }
 }
