@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public class RegisterJFrame extends JFrame implements ActionListener {
     // RegisterJFrame : 注册界面，跟注册相关的逻辑都写在这个类中
 
-    // 静态成员变量，用于给其他类调用(如：LoginJFrame)
+    // 静态成员变量，用于给其他类调用
+    // 创建一个 ArrayList users 用于储存用户信息
     static ArrayList<User> users = new ArrayList<>();
-    // 静态代码块，new RegisterJFrame() 的时候最先执行
+    // 静态代码块：最先执行
     static {
         users.add(new User("root", "root"));
     }
@@ -21,14 +22,14 @@ public class RegisterJFrame extends JFrame implements ActionListener {
     JTextField password = new JTextField();
     // 确认密码
     JTextField confirmPassword = new JTextField();
-    // 添加注册按钮
+    // 注册按钮
     JButton register = new JButton();
 
 
     public RegisterJFrame(){
         // 初始化注册界面
         initJFrame();
-        //在这个界面中添加内容
+        // 在这个界面中添加内容
         initView();
         // 设置可见性
         this.setVisible(true);
@@ -40,7 +41,7 @@ public class RegisterJFrame extends JFrame implements ActionListener {
         usernameText.setBounds(116, 140, 79, 17);
         this.getContentPane().add(usernameText);
 
-        // 注册用户名(输入框)
+        // 设置注册用户名(输入框)
         username.setBounds(195, 134, 200, 30);
         this.getContentPane().add(username);
 
@@ -49,7 +50,7 @@ public class RegisterJFrame extends JFrame implements ActionListener {
         passwordText.setBounds(130, 200, 64, 16);
         this.getContentPane().add(passwordText);
 
-        // 注册密码(输入框)
+        // 设置注册密码(输入框)
         password.setBounds(195, 195, 200, 30);
         this.getContentPane().add(password);
 
@@ -59,11 +60,11 @@ public class RegisterJFrame extends JFrame implements ActionListener {
         confirmPasswordText.setBounds(100, 260, 96, 17);
         this.getContentPane().add(confirmPasswordText);
 
-        // 再次输入密码(输入框)
+        // 设置再次输入密码(输入框)
         confirmPassword.setBounds(195, 256, 200, 30);
         this.getContentPane().add(confirmPassword);
 
-        // 添加注册按钮
+        // 设置注册按钮
         register.setBounds(256, 310, 128, 47);
         register.setIcon(new ImageIcon("image\\register\\注册按钮.png"));
         // 去除按钮的默认边框
@@ -94,33 +95,45 @@ public class RegisterJFrame extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    /**
+     * 弹窗，显示一段话
+     * @param content 传入你要显示的字符串
+     */
     public void showJDialog(String content) {
-        //创建一个弹框对象
+        // 创建一个弹框对象
         JDialog jDialog = new JDialog();
-        //给弹框设置大小
+        // 给弹框设置大小
         jDialog.setSize(200, 150);
-        //让弹框置顶
+        // 让弹框置顶
         jDialog.setAlwaysOnTop(true);
-        //让弹框居中
+        // 让弹框居中
         jDialog.setLocationRelativeTo(null);
-        //弹框不关闭永远无法操作下面的界面
+        // 弹框不关闭永远无法操作下面的界面
         jDialog.setModal(true);
-
-        //创建Jlabel对象管理文字并添加到弹框当中
+        // 创建Jlabel对象管理文字并添加到弹框当中
         JLabel warning = new JLabel(content);
         warning.setBounds(0, 0, 200, 150);
         jDialog.getContentPane().add(warning);
-        //让弹框展示出来
+        // 让弹框展示出来
         jDialog.setVisible(true);
     }
 
+    /**
+     * 监听注册按钮
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj == register){
             System.out.println("注册按钮被点击了");
-            if (username.getText() == null || password.getText() == null || confirmPassword.getText() == null){
+            if (username.getText().equals("") || password.getText().equals("") || confirmPassword.getText().equals("")){
                 System.out.println("用户名和密码不能为空！");
+                showJDialog("用户名和密码不能为空!");
+            } else if (findUserName(username.getText())) {
+                // 用户名已经存在！
+                System.out.println("用户名已经存在！");
+                showJDialog("用户名已经存在！");
             } else if (password.getText().equals(confirmPassword.getText())) {
                 // 两次密码相同，存入用户信息
                 users.add(new User(username.getText(), password.getText()));
@@ -134,5 +147,21 @@ public class RegisterJFrame extends JFrame implements ActionListener {
                 showJDialog("两次密码输入不一致!");
             }
         }
+    }
+
+
+    /**
+     * 查找用户名
+     * @return  true：不存在该用户 false：存在该用户
+     */
+    private boolean findUserName(String userName) {
+        // 遍历users列表中的每个用户，获取用户名
+        for (User user : RegisterJFrame.users) {
+            if (user.getUserName().equals(userName)){
+                return true;
+            }
+        }
+        // 不存在该用户，返回false
+        return false;
     }
 }
