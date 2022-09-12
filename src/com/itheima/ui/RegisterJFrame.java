@@ -152,7 +152,7 @@ public class RegisterJFrame extends JFrame implements ActionListener {
 
     /**
      * 查找用户名
-     * @return  true：不存在该用户 false：存在该用户
+     * @return  true：存在该用户 false：不存在该用户
      */
     private boolean findUserName(String userName) {
         // 遍历users列表中的每个用户，获取用户名
